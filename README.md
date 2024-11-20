@@ -1,7 +1,7 @@
-# XiaobaiDATA
+# XiaoBai-Data
 
-[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/pythonfitness/XiaobaiDATA/blob/main/LICENSE)
-[![GitHub stars](https://img.shields.io/github/stars/pythonfitness/XiaobaiDATA?style=social)](https://github.com/pythonfitness/XiaobaiDATA)
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/pythonfitness/XiaoBai-Data/blob/main/LICENSE)
+[![GitHub stars](https://img.shields.io/github/stars/pythonfitness/XiaoBai-Data?style=social)](https://github.com/pythonfitness/XiaoBai-Data)
 
 ## 目录
 - [项目介绍](#项目介绍)
