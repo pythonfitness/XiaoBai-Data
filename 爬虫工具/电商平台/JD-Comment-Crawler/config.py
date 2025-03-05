@@ -19,13 +19,16 @@ HEADERS = {
 }
 
 # 格式化的URL
-FORMAT_URL = 'https://club.jd.com/comment/productPageComments.action?callback=fetchJSON_comment98&{0}&score={1}&sortType=5&page={2}&pageSize=10&isShadowSku=0&fold=1'
+FORMAT_URL = 'https://club.jd.com/comment/productPageComments.action?callback=fetchJSON_comment98&productId={0}&score={1}&sortType=5&page={2}&pageSize=10&isShadowSku=0&fold=1'
 
 # 配置项：是否遍历评论排序方式
-TRAVERSE_SORTING = True
+TRAVERSE_SORTING = False
+
+# 配置项：是否去重
+DEDUPLICATION = True
 
 # 商品URL列表
 PRODUCT_URLS = [
-    "https://item.jd.com/xxxxxx.html",  # 替换为实际的商品URL
+    "100144482372",  # 替换为实际的商品URL
     # 可以添加更多的商品URL
 ]

@@ -2,8 +2,26 @@ import csv
 from fake_useragent import UserAgent
 import os
 from utils.request_utils import get_json_data
-from config import HEADERS, FORMAT_URL, OUTPUT_DIR, TRAVERSE_SORTING, PRODUCT_URLS
+from config import HEADERS, FORMAT_URL, OUTPUT_DIR, TRAVERSE_SORTING, PRODUCT_URLS, DEDUPLICATION
 
+def remove_duplicates(input_file, output_file):
+    # 用于存储已经出现过的行
+    unique_rows = set()
+    with open(input_file, 'r', newline='', encoding='utf-8') as infile, \
+            open(output_file, 'w', newline='', encoding='utf-8') as outfile:
+        # 创建 CSV 读取器和写入器对象
+        reader = csv.reader(infile)
+        writer = csv.writer(outfile)
+        # 读取并写入表头
+        header = next(reader)
+        writer.writerow(header)
+        for row in reader:
+            # 将行转换为元组，因为集合只能存储可哈希的对象
+            row_tuple = tuple(row)
+            if row_tuple not in unique_rows:
+                # 如果行未出现过，则添加到集合中并写入新文件
+                unique_rows.add(row_tuple)
+                writer.writerow(row)
 def get_comment_data(format_url, proc, i, max_page, output_file):
     """
     获取商品评论数据
@@ -44,7 +62,7 @@ def get_comment_data(format_url, proc, i, max_page, output_file):
                         'replyCount': comment['replyCount'],  # 回复数目
                         'starStep': comment['score'],  # 得分
                         'creationTime': comment['creationTime'],  # 评价时间
-                        'referenceName': comment['referenceName']  # 手机型号
+                        'referenceName': comment['referenceName']  # 型号
                     }
                     writer.writerow(row)
             else:
@@ -52,35 +70,36 @@ def get_comment_data(format_url, proc, i, max_page, output_file):
                 print('网络故障或者是网页出现了问题，五秒后重新连接')
 
 def main():
-    for k, text in enumerate(PRODUCT_URLS, start=1):
-        product_id = 'productId=' + text.replace("https://item.jd.com/", "").replace(".html", "")
+    for k, product_id in enumerate(PRODUCT_URLS, start=1):
         ua = UserAgent()
         headers = HEADERS.copy()
         headers["User-Agent"] = ua.random
 
         if TRAVERSE_SORTING:
+            print('设置遍历全部排序方式')
             sortings = range(7)
         else:
+            print('设置只爬取全部评论')
             sortings = [0]  # 只按全部评论排序
 
         for i in sortings:
             if i == 6:
                 continue
-            print(f'正在爬取第{k}个商品,第{i + 1}个排序方式,{product_id}')
-
+            print(f'正在爬取第{k}个商品,第{i + 1}种排序方式,{product_id}')
             # 先访问第0页获取最大页数，再进行循环遍历
             url = FORMAT_URL.format(product_id, i, 0)
             json_data = get_json_data(url, headers)
             if json_data:
                 print("最大页数%s" % json_data['maxPage'])
-                output_file = os.path.join(OUTPUT_DIR, f'jd_comment_{product_id.split("=")[1]}_{i}.csv')
+                output_file = os.path.join(OUTPUT_DIR, f'jd_comment_{product_id}.csv')
                 get_comment_data(FORMAT_URL, product_id, i, json_data['maxPage'], output_file)  # 遍历每一页
-                if json_data['maxPage'] < 100:
-                    print('评论数过少，无需遍历排序方式')
-                    break
             else:
                 print('网络故障或者是网页出现了问题，重新连接')
                 continue
+        if DEDUPLICATION:
+            print(f'正在去重第{k}个商品')
+            remove_duplicates(os.path.join(OUTPUT_DIR, f'jd_comment_{product_id}.csv'),
+                              os.path.join(OUTPUT_DIR, f'jd_comment_{product_id}_deduplication.csv'))
 
 if __name__ == "__main__":
     main()
