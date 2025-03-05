@@ -28,7 +28,7 @@ TRAVERSE_SORTING = False
 DEDUPLICATION = True
 
 # 商品URL列表
-PRODUCT_URLS = [
+PRODUCT_IDS = [
     "100144482372",  # 替换为实际的商品URL
     # 可以添加更多的商品URL
 ]

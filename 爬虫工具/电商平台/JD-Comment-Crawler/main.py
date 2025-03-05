@@ -2,7 +2,8 @@ import csv
 from fake_useragent import UserAgent
 import os
 from utils.request_utils import get_json_data
-from config import HEADERS, FORMAT_URL, OUTPUT_DIR, TRAVERSE_SORTING, PRODUCT_URLS, DEDUPLICATION
+from config import HEADERS, FORMAT_URL, OUTPUT_DIR, TRAVERSE_SORTING, PRODUCT_IDS, DEDUPLICATION
+import time
 
 def remove_duplicates(input_file, output_file):
     # 用于存储已经出现过的行
@@ -22,11 +23,11 @@ def remove_duplicates(input_file, output_file):
                 # 如果行未出现过，则添加到集合中并写入新文件
                 unique_rows.add(row_tuple)
                 writer.writerow(row)
-def get_comment_data(format_url, proc, i, max_page, output_file):
+def get_comment_data(format_url, product_id, i, max_page, output_file):
     """
     获取商品评论数据
     :param format_url: 格式化的字符串架子，在循环中给它添上参数
-    :param proc: 商品的productID，标识唯一的商品号
+    :param product_id: 商品标识唯一的商品号
     :param i: 商品的排序方式，例如全部商品、晒图、追评、好评等
     :param max_page: 商品的评论最大页数
     :param output_file: 输出的 CSV 文件路径
@@ -47,7 +48,7 @@ def get_comment_data(format_url, proc, i, max_page, output_file):
         cur_page = 0
         while cur_page < max_page:
             cur_page += 1
-            url = format_url.format(proc, i, cur_page)
+            url = format_url.format(product_id, i, cur_page)
             json_data = get_json_data(url, headers)
             if json_data:
                 page_len = len(json_data['comments'])
@@ -68,9 +69,10 @@ def get_comment_data(format_url, proc, i, max_page, output_file):
             else:
                 cur_page -= 1
                 print('网络故障或者是网页出现了问题，五秒后重新连接')
+                time.sleep(5)
 
 def main():
-    for k, product_id in enumerate(PRODUCT_URLS, start=1):
+    for k, product_id in enumerate(PRODUCT_IDS, start=1):
         ua = UserAgent()
         headers = HEADERS.copy()
         headers["User-Agent"] = ua.random
