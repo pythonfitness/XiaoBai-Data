@@ -27,6 +27,10 @@ TRAVERSE_SORTING = False
 # 配置项：是否去重
 DEDUPLICATION = True
 
+# 配置项：爬取间隔区间
+MIN_SLEEP_INTERVAL = 0.5
+MAX_SLEEP_INTERVAL = 1.5
+
 # 商品URL列表
 PRODUCT_IDS = [
     "100144482372",  # 替换为实际的商品URL
