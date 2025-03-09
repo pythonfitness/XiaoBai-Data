@@ -12,7 +12,7 @@
 针对部分平台已有的简单易用的爬虫项目，也会附上项目链接，方便大家直接取用。
 
 ## 项目迭代计划
-### 京东评论爬虫（JD-Comment-Crawler）——**已上线**
+### 京东评论爬虫[JD-Comment-Crawler](https://github.com/pythonfitness/XiaoBai-Data/blob/main/%E7%88%AC%E8%99%AB%E5%B7%A5%E5%85%B7/%E7%94%B5%E5%95%86%E5%B9%B3%E5%8F%B0/JD-Comment-Crawler/readme.md)——**已上线**
 
 ### 百度咨询爬虫——3月
 
