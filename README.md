@@ -36,7 +36,9 @@
 ### 电商平台
 #### 京东评论爬虫（JD-Comment-Crawler）——**已上线**
 
-### 内容平台——待建设
+### 内容平台
+#### 微博搜索——推荐使用[weibo-search](https://github.com/dataabc/weibo-search) 
+#### B站弹幕——推荐使用[BiLiBiLi_DanMu_Crawling](https://github.com/HengXin666/BiLiBiLi_DanMu_Crawling) 
 
 ### 财经平台——待建设
 
